@@ -1,0 +1,48 @@
+services:
+  gerrit:
+    image: gerritcodereview/gerrit:3.9.1
+    ports:
+      - "8080:8080" # REST API
+      - "29418:29418" # SSH
+    environment:
+      - CANONICAL_WEB_URL=http://localhost:8080/
+      - HTTPD_LISTEN_URL=http://*:8080/
+      - AUTH_TYPE=DEVELOPMENT_BECOME_ANY_ACCOUNT # Useful for local testing
+    volumes:
+      - gerrit-cache:/var/gerrit/cache
+      - gerrit-db:/var/gerrit/db
+      - gerrit-etc:/var/gerrit/etc
+      - gerrit-git:/var/gerrit/git
+      - gerrit-index:/var/gerrit/index
+
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env.litellm
+    # To run litellm successfully you would typically mount a config.yaml to map models to provider API keys
+    volumes:
+      - ./litellm_config.yaml:/app/config.yaml
+    command: [ "--config", "/app/config.yaml", "--port", "4000" ]
+
+  bot:
+    build: .
+    depends_on:
+      - gerrit
+      - litellm
+    env_file:
+      - .env
+    environment:
+      - GERRIT_SSH_HOST=gerrit
+      - GERRIT_REST_URL=http://gerrit:8080
+      - LITELLM_PROXY_URL=http://litellm:4000
+      - VERIFY_SSH_HOST=False
+    restart: unless-stopped
+
+volumes:
+  gerrit-cache:
+  gerrit-db:
+  gerrit-etc:
+  gerrit-git:
+  gerrit-index:

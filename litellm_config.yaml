@@ -1,0 +1,56 @@
+model_list:
+  # -------------------------------------------------------------------
+  # Google Gemini (via Google AI Studio)
+  # Requires GEMINI_API_KEY to be set in your environment variables
+  # -------------------------------------------------------------------
+  - model_name: gemini-pro
+    litellm_params:
+      model: gemini/gemini-2.5-pro
+      api_key: os.environ/GEMINI_API_KEY
+    model_info:
+      # Refer the url below to find the base model for cost tracking
+      # https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json
+      base_model: gemini/gemini-2.5-pro
+  - model_name: gemini-flash
+    litellm_params:
+      model: gemini/gemini-3-flash-preview
+      api_key: os.environ/GEMINI_API_KEY
+    model_info:
+      base_model: gemini/gemini-3-flash-preview
+
+  # -------------------------------------------------------------------
+  # Example Configurations for Other Providers
+  # Uncomment and configure with the appropriate environment variables
+  # -------------------------------------------------------------------
+
+  # OpenAI (Requires OPENAI_API_KEY)
+  - model_name: gpt-4o
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+    model_info:
+      base_model: openai/gpt-4o
+
+  # Anthropic Claude (Requires ANTHROPIC_API_KEY)
+  - model_name: claude-3-5-sonnet
+    litellm_params:
+      model: anthropic/claude-3-5-sonnet-20241022
+      api_key: os.environ/ANTHROPIC_API_KEY
+    model_info:
+      base_model: anthropic/claude-3-5-sonnet-20241022
+
+  # Grok / xAI (Requires XAI_API_KEY)
+  - model_name: grok-2
+    litellm_params:
+      model: xai/grok-2-latest
+      api_key: os.environ/XAI_API_KEY
+    model_info:
+      base_model: xai/grok-2-latest
+
+  # OpenRouter (Requires OPENROUTER_API_KEY)
+  - model_name: openrouter-llama-3
+    litellm_params:
+      model: openrouter/meta-llama/llama-3-70b-instruct
+      api_key: os.environ/OPENROUTER_API_KEY
+    model_info:
+      base_model: openrouter/meta-llama/llama-3-70b-instruct

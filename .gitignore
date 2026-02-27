@@ -1,0 +1,6 @@
+.pytest_cache
+.venv
+**/__pycache__
+.env
+.env.litellm
+id_rsa*
